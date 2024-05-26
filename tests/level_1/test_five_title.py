@@ -1,42 +1,35 @@
 from functions.level_1.five_title import change_copy_item
 
 
-def test_change_copy_item():
-    title = "Title"
-    max_title_length = len(title) + len("Copy of ")
-    expected_result = title
-    assert change_copy_item(title, max_title_length) == expected_result
+def test__change_copy_item__title_is_not_copy_and_not_enough_max_length():
+    assert change_copy_item("Title", 1) == "Title"
 
-    max_title_length += 1
-    expected_result = f"Copy of {title}"
-    assert change_copy_item(title, max_title_length) == expected_result
 
-    title = "Copy of Title"
-    max_title_length = len(title) + len("Copy of ")
-    expected_result = title
-    assert change_copy_item(title, max_title_length) == expected_result
+def test__change_copy_item__title_is_not_copy_and_enough_max_length():
+    assert change_copy_item("Title", 100) == "Copy of Title"
 
-    max_title_length += 1
-    expected_result = f"{title} (2)"
-    assert change_copy_item(title, max_title_length) == expected_result
 
-    title = "Copy of Title (1)"
-    max_title_length = len(title) + len("Copy of ")
-    expected_result = title
-    assert change_copy_item(title, max_title_length) == expected_result
+def test__change_copy_item__title_is_copy_and_not_enough_max_length():
+    assert change_copy_item("Copy of Title", 1) == "Copy of Title"
 
-    max_title_length += 1
-    words = title.split()
-    last_word = words[-1]
-    copy_cnt = int(last_word[1:-1])
-    expected_result = f"{' '.join(words[:-1])} ({copy_cnt+1})"
-    assert change_copy_item(title, max_title_length) == expected_result
 
-    title = "Copy of Title (text_with_digit_123)"
-    max_title_length = len(title) + len("Copy of ")
-    expected_result = title
-    assert change_copy_item(title, max_title_length) == expected_result
+def test__change_copy_item__title_is_copy_and_enough_max_length():
+    assert change_copy_item("Copy of Title", 100) == "Copy of Title (2)"
 
-    max_title_length += 1
-    expected_result = f"{title} (2)"
-    assert change_copy_item(title, max_title_length) == expected_result
+
+def test__change_copy_item__title_is_copy_with_number_in_brackets_and_not_enough_max_length():
+    assert change_copy_item("Copy of Title (1)", 1) == "Copy of Title (1)"
+
+
+def test__change_copy_item__title_is_copy_with_number_in_brackets_and_enough_max_length():
+    assert change_copy_item("Copy of Title (1)", 100) == "Copy of Title (2)"
+
+
+def test__change_copy_item__title_is_copy_with_text_in_brackets_and_not_enough_max_length():
+    assert change_copy_item("Copy of Title (text_with_digit_123)", 1) \
+           == "Copy of Title (text_with_digit_123)"
+
+
+def test__change_copy_item__title_is_copy_with_text_in_brackets_and_enough_max_length():
+    assert change_copy_item("Copy of Title (text_with_digit_123)", 100) \
+           == "Copy of Title (text_with_digit_123) (2)"
